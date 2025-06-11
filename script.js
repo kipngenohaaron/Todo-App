@@ -3,77 +3,115 @@ const todoInput = document.getElementById('todo-input');
 const addBtn = document.getElementById('add-btn');
 const todoList = document.getElementById('todo-list');
 const clearBtn = document.getElementById('clear-btn');
+const modeToggle = document.getElementById('mode-toggle');
 
-// Load todos from local storage if available
 let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let isDarkMode = false;
+
 renderTodos();
 
-// Add new todo
+// Toggle light/dark mode
+modeToggle.addEventListener('click', () => {
+  isDarkMode = !isDarkMode;
+  document.body.style.backgroundColor = isDarkMode ? '#18191a' : '#f0f2f5';
+  document.body.style.color = isDarkMode ? '#ffffff' : '#000000';
+  modeToggle.textContent = isDarkMode ? '🌙 Dark Mode' : '🌞 Light Mode';
+});
+
+// Add new task
 addBtn.addEventListener('click', () => {
-    const task = todoInput.value.trim();
-    if (task) {
-        todos.push(task);
-        saveTodos();
-        renderTodos();
-        todoInput.value = '';
-    }
-});
-
-// Add task on Enter key press
-todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        addBtn.click();
-    }
-});
-
-// Clear all todos
-clearBtn.addEventListener('click', () => {
-    todos = [];
+  const task = todoInput.value.trim();
+  if (task) {
+    todos.push({ text: task, completed: false });
     saveTodos();
     renderTodos();
+    todoInput.value = '';
+  }
 });
 
-// Function to render todos
-function renderTodos() {
-    // Clear existing list
-    todoList.innerHTML = '';
-
-    // If no todos, show message
-    if (todos.length === 0) {
-        todoList.innerHTML = '<p style="text-align:center;">No tasks yet!</p>';
-        return;
-    }
-
-    // Create list items
-    todos.forEach((todo, index) => {
-        const li = document.createElement('li');
-        li.className = 'todo-item';
-
-        const span = document.createElement('span');
-        span.innerText = todo;
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.innerHTML = '&times;';
-
-        deleteBtn.addEventListener('click', () => {
-            deleteTodo(index);
-        });
-
-        li.appendChild(span);
-        li.appendChild(deleteBtn);
-        todoList.appendChild(li);
-    });
+// Mark task as completed or uncompleted
+function toggleComplete(index) {
+  todos[index].completed = !todos[index].completed;
+  saveTodos();
+  renderTodos();
 }
 
-// Function to delete individual todo
+// Delete task
 function deleteTodo(index) {
-    todos.splice(index, 1);
+  todos.splice(index, 1);
+  saveTodos();
+  renderTodos();
+}
+
+// Edit task
+function editTodo(index) {
+  const newText = prompt('Edit task:', todos[index].text);
+  if (newText !== null && newText.trim() !== '') {
+    todos[index].text = newText.trim();
     saveTodos();
     renderTodos();
+  }
+}
+
+// Render task list
+function renderTodos() {
+  todoList.innerHTML = '';
+
+  if (todos.length === 0) {
+    todoList.innerHTML = '<p style="text-align:center;">Your list is empty! 😎</p>';
+    return;
+  }
+
+  todos.forEach((todo, index) => {
+    const li = document.createElement('li');
+    li.className = 'todo-item';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'todo-checkbox';
+    checkbox.checked = todo.completed;
+    checkbox.addEventListener('change', () => toggleComplete(index));
+
+    const span = document.createElement('span');
+    span.innerText = todo.text;
+    span.className = 'task-text';
+    if (todo.completed) span.classList.add('completed');
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '&#9998;'; // Pencil icon
+    editBtn.title = 'Edit Task';
+    editBtn.addEventListener('click', () => editTodo(index));
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'edit-btn';
+    deleteBtn.innerHTML = '&times;';
+    deleteBtn.title = 'Delete Task';
+    deleteBtn.style.color = '#dc3545';
+    deleteBtn.addEventListener('click', () => deleteTodo(index));
+
+    li.appendChild(checkbox);
+    li.appendChild(span);
+    li.appendChild(editBtn);
+    li.appendChild(deleteBtn);
+
+    todoList.appendChild(li);
+  });
 }
 
 // Save todos to local storage
 function saveTodos() {
-    localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
+
+// Add task on pressing Enter
+todoInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') addBtn.click();
+});
+
+// Clear all tasks
+clearBtn.addEventListener('click', () => {
+  todos = [];
+  saveTodos();
+  renderTodos();
+});
