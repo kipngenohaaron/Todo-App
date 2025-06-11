@@ -1,8 +1,3 @@
-Sure! Here's a **complete and professional `README.md`** file for your **Smart Todo App** with features, setup instructions, usage guide, contact info, and more:
-
----
-
-````markdown
 # 📝 Smart Todo App
 
 A feature-rich and responsive Todo List web application built with **HTML**, **CSS**, and **JavaScript**. It helps users organize tasks with priorities, due dates, and tags. The app also includes a dark/light mode toggle and options to export/import tasks via JSON.
@@ -99,25 +94,12 @@ Feel free to use, modify, and distribute it.
 
 ## 🙋 Contact
 
-Made with 💻 by [AARON KIPNGENO](https://github.com/kipngenohaaron)
+Made with 💻 by [Kipngenoh Aaron](https://github.com/kipngenohaaron)
 
 📧 Email: [kipngenohaaron@gmail.com](mailto:kipngenohaaron@gmail.com)
 🔗 GitHub Repo: [kipngenohaaron/todo-app](https://github.com/kipngenohaaron/todo-app)
 
 Feel free to raise issues or contribute to the project! 🚀
 
-````
 
----
 
-### ✅ Next Step
-
-Copy and paste this content into a new file named `README.md` and commit it to your GitHub repo:
-
-```bash
-git add README.md
-git commit -m "Add complete project README"
-git push origin main
-````
-
-Let me know if you'd like me to customize the screenshots, add contribution guidelines, or write a changelog.
