@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -23,5 +23,47 @@
   </div>
 
   <script src="script.js"></script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Todo App - All Features</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📝 Advanced Todo List</h1>
+    <div>
+      <button id="mode-toggle" class="mode-btn">🌙 Light Mode</button>
+      <button id="export-btn" title="Export Tasks">📤 Export</button>
+      <button id="import-btn" title="Import Tasks">📥 Import</button>
+      <button id="clear-all" title="Clear All">🗑️ Clear All</button>
+    </div>
+  </header>
+  <!-- New task input -->
+  <div class="input-section">
+    <input placeholder="Task name" id="task-name" />
+    <select id="task-priority" title="Priority">
+      <option value="Low">Low</option>
+      <option value="Medium" selected>Medium</option>
+      <option value="High">High</option>
+    </select>
+    <input type="date" id="task-due" title="Due Date"/>
+    <input placeholder="Tags, comma separated" id="task-tags"/>
+    <button id="add-task">➕ Add Task</button>
+  </div>
+
+  <!-- Task list with drag-and-drop -->
+  <ul id="task-list"></ul>
+</div>
+
+<!-- For importing tasks -->
+<input type="file" id="import-file" style="display:none"/>
+
+<script src="script.js"></script>
 </body>
 </html>
