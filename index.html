@@ -2,38 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart Todo App - All Features</title>
+
+  <!-- Link to external CSS file -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Main container -->
   <div class="container">
+    
+    <!-- Header with title and control buttons -->
     <header>
       <h1>📝 Advanced Todo List</h1>
       <div>
-        <button id="mode-toggle" class="mode-btn">🌙 Light Mode</button>
+        <!-- Light/Dark mode toggle button -->
+        <button id="mode-toggle" class="mode-btn" title="Toggle Theme">🌙 Light Mode</button>
+
+        <!-- Export tasks to JSON file -->
         <button id="export-btn" title="Export Tasks">📤 Export</button>
+
+        <!-- Import tasks from a JSON file -->
         <button id="import-btn" title="Import Tasks">📥 Import</button>
-        <button id="clear-all" title="Clear All">🗑️ Clear All</button>
+
+        <!-- Clear all tasks -->
+        <button id="clear-all" title="Clear All Tasks">🗑️ Clear All</button>
       </div>
     </header>
 
+    <!-- Section for adding a new task -->
     <div class="input-section">
+      <!-- Task name input -->
       <input placeholder="Task name" id="task-name" />
+
+      <!-- Priority dropdown -->
       <select id="task-priority" title="Priority">
         <option value="Low">Low</option>
         <option value="Medium" selected>Medium</option>
         <option value="High">High</option>
       </select>
-      <input type="date" id="task-due" title="Due Date"/>
-      <input placeholder="Tags, comma separated" id="task-tags"/>
-      <button id="add-task">➕ Add Task</button>
+
+      <!-- Due date picker -->
+      <input type="date" id="task-due" title="Due Date" />
+
+      <!-- Tags input (comma separated) -->
+      <input placeholder="Tags, comma separated" id="task-tags" />
+
+      <!-- Add task button -->
+      <button id="add-task" title="Add Task">➕ Add Task</button>
     </div>
 
+    <!-- Unordered list where tasks will appear -->
     <ul id="task-list"></ul>
   </div>
 
-  <input type="file" id="import-file" accept=".json" style="display:none" />
+  <!-- Hidden file input element for importing tasks -->
+  <input type="file" id="import-file" style="display:none" />
+
+  <!-- Link to JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
