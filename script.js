@@ -115,7 +115,8 @@
 //   saveTodos();
 //   renderTodos();
 // });
-// Initialize variables  
+
+// Initialize variables to refer to DOM elements  
 const taskList = document.getElementById('task-list');  
 const modeBtn = document.getElementById('mode-toggle');  
 const exportBtn = document.getElementById('export-btn');  
@@ -130,13 +131,14 @@ const addTaskBtn = document.getElementById('add-task');
 
 const importFileInput = document.getElementById('import-file');  
 
+// Load existing tasks from local storage or initialize empty array  
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];  
 let isDarkMode = false;  
 
-// Load tasks  
+// Render the task list on page load  
 renderTasks();  
 
-// Theme toggle  
+// Toggle between dark and light themes  
 modeBtn.addEventListener('click', () => {  
   isDarkMode = !isDarkMode;  
   document.body.style.backgroundColor = isDarkMode ? '#18191a' : '#f0f2f5';  
@@ -144,18 +146,21 @@ modeBtn.addEventListener('click', () => {
   modeBtn.textContent = isDarkMode ? '🌞 Light Mode' : '🌙 Dark Mode';  
 });  
 
-// Add task  
+// Add new task on button click or pressing Enter  
 addTaskBtn.addEventListener('click', addTask);  
 taskNameInput.addEventListener('keypress', (e) => {  
   if (e.key === 'Enter') addTask();  
 });  
 
+// Function to add a new task  
 function addTask() {  
   const name = taskNameInput.value.trim();  
-  if (!name) return;  
+  if (!name) return; // Do not add empty task  
   const priority = taskPrioritySelect.value;  
   const dueDate = taskDueInput.value;  
   const tags = taskTagsInput.value.split(',').map(t => t.trim()).filter(t => t);  
+  
+  // Create task object with unique ID  
   const task = {  
     id: Date.now(),  
     name,  
@@ -164,30 +169,35 @@ function addTask() {
     tags,  
     completed: false  
   };  
+  
+  // Add task to array and save  
   tasks.push(task);  
   saveTasks();  
   renderTasks();  
-  // Clear inputs  
+  
+  // Clear input fields after adding  
   taskNameInput.value = '';  
   taskTagsInput.value = '';  
   taskDueInput.value = '';  
 }  
 
-// Save & Load  
+// Save tasks array to local storage  
 function saveTasks() {  
   localStorage.setItem('tasks', JSON.stringify(tasks));  
 }  
 
+// Render the task list  
 function renderTasks() {  
   taskList.innerHTML = '';  
 
+  // Loop through tasks and create HTML for each  
   tasks.forEach((task, index) => {  
     const li = document.createElement('li');  
     li.className = 'task-item';  
-    li.draggable = true;  
+    li.draggable = true; // Enable drag-and-drop  
     li.dataset.index = index;  
 
-    // Drag events  
+    // Drag events for reordering  
     li.addEventListener('dragstart', (e) => {  
       e.dataTransfer.setData('text/plain', index);  
       li.classList.add('dragging');  
@@ -207,10 +217,11 @@ function renderTasks() {
       reorderTasks(fromIndex);  
     });  
 
-    // Task details  
+    // Container for task details  
     const detailsDiv = document.createElement('div');  
     detailsDiv.className = 'task-details';  
 
+    // Header with checkbox, name, priority  
     const headerDiv = document.createElement('div');  
     headerDiv.className = 'task-header';  
 
@@ -241,7 +252,7 @@ function renderTasks() {
     headerDiv.appendChild(nameSpan);  
     headerDiv.appendChild(priorityBadge);  
 
-    // Additional info  
+    // Additional info: due date and tags  
     const infoDiv = document.createElement('div');  
     infoDiv.className = 'task-info';  
 
@@ -262,7 +273,7 @@ function renderTasks() {
       infoDiv.appendChild(tagsDiv);  
     }  
 
-    // Buttons  
+    // Buttons for edit and delete  
     const btnDiv = document.createElement('div');  
 
     const editBtn = document.createElement('button');  
@@ -274,96 +285,3 @@ function renderTasks() {
     const deleteBtn = document.createElement('button');  
     deleteBtn.className = 'task-btn';  
     deleteBtn.innerHTML = '&times;';  
-    deleteBtn.title = 'Delete Task';  
-    deleteBtn.onclick = () => deleteTask(index);  
-
-    btnDiv.appendChild(editBtn);  
-    btnDiv.appendChild(deleteBtn);  
-
-    detailsDiv.appendChild(headerDiv);  
-    detailsDiv.appendChild(infoDiv);  
-    detailsDiv.appendChild(btnDiv);  
-
-    li.appendChild(detailsDiv);  
-    taskList.appendChild(li);  
-  });  
-}  
-
-// Reorder tasks  
-function reorderTasks(fromIndex) {  
-  const index = parseInt(fromIndex);  
-  const taskNode = document.querySelector('.dragging');  
-  const newIndex = Array.from(taskList.children).indexOf(taskNode);  
-  if (newIndex >= 0 && newIndex !== index) {  
-    const movedTask = tasks.splice(index, 1)[0];  
-    tasks.splice(newIndex, 0, movedTask);  
-    saveTasks();  
-    renderTasks();  
-  }  
-}  
-
-// Toggle complete  
-function toggleComplete(index) {  
-  tasks[index].completed = !tasks[index].completed;  
-  saveTasks();  
-  renderTasks();  
-}  
-
-// Delete  
-function deleteTask(index) {  
-  tasks.splice(index, 1);  
-  saveTasks();  
-  renderTasks();  
-}  
-
-// Edit task  
-function editTask(index) {  
-  const current = tasks[index];  
-  const newName = prompt('Edit task', current.name);  
-  if (newName && newName.trim() !== '') {  
-    current.name = newName.trim();  
-    saveTasks();  
-    renderTasks();  
-  }  
-}  
-
-// Export tasks  
-exportBtn.onclick = () => {  
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks));  
-  const downloadAnchorNode = document.createElement('a');  
-  downloadAnchorNode.setAttribute("href", dataStr);  
-  downloadAnchorNode.setAttribute("download", "tasks.json");  
-  document.body.appendChild(downloadAnchorNode);  
-  downloadAnchorNode.click();  
-  downloadAnchorNode.remove();  
-};  
-
-// Import tasks  
-importBtn.onclick = () => {  
-  document.getElementById('import-file').click();  
-};  
-
-document.getElementById('import-file').onchange = (e) => {  
-  const file = e.target.files[0];  
-  if (!file) return;  
-  const reader = new FileReader();  
-  reader.onload = () => {  
-    try {  
-      const importedTasks = JSON.parse(reader.result);  
-      if (Array.isArray(importedTasks)) {  
-        tasks = importedTasks;  
-        saveTasks();  
-        renderTasks();  
-        alert('Tasks imported successfully!');  
-      } else {  
-        alert('Invalid format!');  
-      }  
-    } catch {  
-      alert('Failed to parse file.');  
-    }  
-  };  
-  reader.readAsText(file);  
-};  
-
-// Drag-and-drop handling  
-//
