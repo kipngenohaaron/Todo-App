@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Todo App</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Todo App</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>My Todo List</h1>
-        <div class="input-section">
-            <input type="text" id="todo-input" placeholder="Add a new task..." />
-            <button id="add-btn">Add</button>
-        </div>
-        <ul id="todo-list"></ul>
-        <button id="clear-btn">Clear All</button>
+  <div class="container">
+    <header>
+      <h1>📝 Todo List</h1>
+      <button id="mode-toggle" class="mode-btn">🌙 Light Mode</button>
+    </header>
+    <div class="input-section">
+      <input type="text" id="todo-input" placeholder="Add a new task...” />
+      <button id="add-btn">➕ Add</button>
     </div>
+    <ul id="todo-list"></ul>
+    <div class="footer">
+      <button id="clear-btn">🗑️ Clear All</button>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
