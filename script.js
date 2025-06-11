@@ -117,6 +117,7 @@
 // });
 
 // Initialize variables to refer to DOM elements  
+// Initialize variables to refer to DOM elements  
 const taskList = document.getElementById('task-list');  
 const modeBtn = document.getElementById('mode-toggle');  
 const exportBtn = document.getElementById('export-btn');  
@@ -160,7 +161,6 @@ function addTask() {
   const dueDate = taskDueInput.value;  
   const tags = taskTagsInput.value.split(',').map(t => t.trim()).filter(t => t);  
   
-  // Create task object with unique ID  
   const task = {  
     id: Date.now(),  
     name,  
@@ -170,12 +170,10 @@ function addTask() {
     completed: false  
   };  
   
-  // Add task to array and save  
   tasks.push(task);  
   saveTasks();  
   renderTasks();  
   
-  // Clear input fields after adding  
   taskNameInput.value = '';  
   taskTagsInput.value = '';  
   taskDueInput.value = '';  
@@ -190,14 +188,12 @@ function saveTasks() {
 function renderTasks() {  
   taskList.innerHTML = '';  
 
-  // Loop through tasks and create HTML for each  
   tasks.forEach((task, index) => {  
     const li = document.createElement('li');  
     li.className = 'task-item';  
-    li.draggable = true; // Enable drag-and-drop  
+    li.draggable = true;  
     li.dataset.index = index;  
 
-    // Drag events for reordering  
     li.addEventListener('dragstart', (e) => {  
       e.dataTransfer.setData('text/plain', index);  
       li.classList.add('dragging');  
@@ -217,11 +213,9 @@ function renderTasks() {
       reorderTasks(fromIndex);  
     });  
 
-    // Container for task details  
     const detailsDiv = document.createElement('div');  
     detailsDiv.className = 'task-details';  
 
-    // Header with checkbox, name, priority  
     const headerDiv = document.createElement('div');  
     headerDiv.className = 'task-header';  
 
@@ -252,11 +246,10 @@ function renderTasks() {
     headerDiv.appendChild(nameSpan);  
     headerDiv.appendChild(priorityBadge);  
 
-    // Additional info: due date and tags  
     const infoDiv = document.createElement('div');  
     infoDiv.className = 'task-info';  
 
-    if(task.dueDate) {  
+    if (task.dueDate) {  
       const dueSpan = document.createElement('span');  
       dueSpan.innerHTML = '📅 ' + task.dueDate;  
       infoDiv.appendChild(dueSpan);  
@@ -273,7 +266,6 @@ function renderTasks() {
       infoDiv.appendChild(tagsDiv);  
     }  
 
-    // Buttons for edit and delete  
     const btnDiv = document.createElement('div');  
 
     const editBtn = document.createElement('button');  
@@ -285,3 +277,53 @@ function renderTasks() {
     const deleteBtn = document.createElement('button');  
     deleteBtn.className = 'task-btn';  
     deleteBtn.innerHTML = '&times;';  
+    deleteBtn.title = 'Delete Task';  
+    deleteBtn.onclick = () => deleteTask(index);  
+
+    btnDiv.appendChild(editBtn);  
+    btnDiv.appendChild(deleteBtn);  
+
+    detailsDiv.appendChild(headerDiv);  
+    detailsDiv.appendChild(infoDiv);  
+    detailsDiv.appendChild(btnDiv);  
+    li.appendChild(detailsDiv);  
+
+    taskList.appendChild(li);  
+  }); // End forEach
+} // End renderTasks
+
+// Placeholder for required functions  
+function toggleComplete(index) {  
+  tasks[index].completed = !tasks[index].completed;  
+  saveTasks();  
+  renderTasks();  
+}  
+
+function editTask(index) {  
+  const task = tasks[index];  
+  const newName = prompt('Edit task name:', task.name);  
+  if (newName !== null) {  
+    task.name = newName.trim();  
+    saveTasks();  
+    renderTasks();  
+  }  
+}  
+
+function deleteTask(index) {  
+  if (confirm('Are you sure you want to delete this task?')) {  
+    tasks.splice(index, 1);  
+    saveTasks();  
+    renderTasks();  
+  }  
+}  
+
+function reorderTasks(fromIndex) {  
+  const items = Array.from(taskList.children);  
+  const toIndex = items.findIndex(item => item.classList.contains('dragging'));  
+  if (toIndex > -1 && fromIndex !== toIndex) {  
+    const [movedTask] = tasks.splice(fromIndex, 1);  
+    tasks.splice(toIndex, 0, movedTask);  
+    saveTasks();  
+    renderTasks();  
+  }  
+}
