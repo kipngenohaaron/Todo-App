@@ -1,4 +1,4 @@
-/* Reset & base styles */
+/* Reset & style */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f0f2f5;
@@ -8,10 +8,10 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 600px;
   margin: 50px auto;
-  background: #ffffff;
-  padding: 20px;
+  background: #fff;
+  padding: 15px;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   display: flex;
@@ -19,21 +19,18 @@ body {
   align-items: stretch;
 }
 
-/* Header style */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 }
-
 h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
   display: flex;
   align-items: center;
 }
-
 .mode-btn {
   border: none;
   background: none;
@@ -43,7 +40,6 @@ h1 {
   border-radius: 8px;
   transition: background-color 0.2s;
 }
-
 .mode-btn:hover {
   background-color: rgba(0,0,0,0.05);
 }
@@ -51,115 +47,96 @@ h1 {
 /* Input section styles */
 .input-section {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
 }
-
-#todo-input {
-  flex: 1;
-  padding: 12px 15px;
-  font-size: 16px;
+#task-name {
+  flex: 2;
+  padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  outline: none;
-  transition: border-color 0.3s;
 }
-
-#todo-input:focus {
-  border-color: #007bff;
+#task-priority, #task-due, #task-tags {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
-
-/* Buttons */
-#add-btn, #clear-btn {
-  padding: 12px 20px;
+#add-task {
+  padding: 10px 15px;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+}
+#add-task:hover {
+  background-color: #0069d9;
 }
 
-#add-btn {
-  background-color: #28a745;
-  color: white;
-}
-
-#add-btn:hover {
-  background-color: #218838;
-  transform: scale(1.02);
-}
-
-#clear-btn {
-  background-color: #dc3545;
-  color: white;
-  width: 100%;
-  font-weight: bold;
-}
-
-#clear-btn:hover {
-  background-color: #c82333;
-  transform: scale(1.02);
-}
-
-/* Todo list styles */
-#todo-list {
+/* List styles */
+#task-list {
   list-style: none;
   padding: 0;
-  margin-bottom: 20px;
 }
-
-.todo-item {
-  background-color: #f8f9fa;
+.task-item {
+  background: #f8f9fa;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  padding: 12px 15px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: background-color 0.2s, transform 0.1s;
+  justify-content: space-between;
+  cursor: grab;
+  transition: background-color 0.2s;
 }
-
-.todo-item:hover {
-  background-color: #e9ecef;
-  transform: translateY(-2px);
+.task-item.dragging {
+  opacity: 0.5;
 }
-
-/* Checkbox styles */
-.todo-checkbox {
-  margin-right: 15px;
-  cursor: pointer;
-  accent-color: #007bff;
-}
-
-.task-text {
+.task-details {
+  display: flex;
+  flex-direction: column;
   flex: 1;
-  font-size: 16px;
+}
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task-info {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  font-size: 14px;
+}
+.task-tags span {
+  background-color: #e2e3e5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
 }
 
-/* Completed task style */
-.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-/* Edit button styles */
-.edit-btn {
+/* Buttons inside task */
+.task-btn {
   background: none;
   border: none;
-  font-size: 20px;
-  margin-left: 10px;
   cursor: pointer;
-  color: #6c757d;
-  transition: color 0.2s;
+  font-size: 18px;
+  margin-left: 10px;
+}
+.task-btn:hover {
+  color: #c82333;
 }
 
-.edit-btn:hover {
-  color: #495057;
+/* Theme toggle & buttons */
+#export-btn, #import-btn, #clear-all {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
 }
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-}
+#export-btn:hover { background: #e2e3e5; }
+#import-btn:hover { background: #e2e3e5; }
+#clear-all:hover { background: #e2e3e5; }
